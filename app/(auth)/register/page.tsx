@@ -4,6 +4,15 @@ import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+async function createBoard(userId: string, slug: string, name: string) {
+  const res = await fetch('/api/boards/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId, slug, name }),
+  });
+  return res.ok;
+}
+
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,13 +37,9 @@ export default function RegisterPage() {
     const { data: authData, error: authErr } = await supabase.auth.signUp({ email, password });
     if (authErr || !authData.user) { setError(authErr?.message || 'Sign up failed.'); setLoading(false); return; }
 
-    // Create board
-    const { error: boardErr } = await supabase.from('boards').insert({
-      slug,
-      name: boardName,
-      owner_id: authData.user.id,
-    });
-    if (boardErr) { setError('That board name is taken. Try another.'); setLoading(false); return; }
+    // Create board via API route (uses service role to bypass RLS)
+    const ok = await createBoard(authData.user.id, slug, boardName);
+    if (!ok) { setError('That board name is taken. Try another.'); setLoading(false); return; }
 
     router.push('/dashboard?welcome=1');
   }
