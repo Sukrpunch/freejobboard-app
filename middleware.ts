@@ -7,8 +7,10 @@ export async function middleware(request: NextRequest) {
 
   // Subdomain routing — detect {slug}.freejobboard.ai
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'freejobboard.ai';
-  const isSubdomain = host.endsWith(`.${rootDomain}`) && !host.startsWith('www.');
-  const slug = isSubdomain ? host.replace(`.${rootDomain}`, '') : null;
+  const RESERVED = ['www', 'app', 'api', 'admin', 'staging'];
+  const subdomain = host.endsWith(`.${rootDomain}`) ? host.replace(`.${rootDomain}`, '') : null;
+  const isSubdomain = subdomain !== null && !RESERVED.includes(subdomain);
+  const slug = isSubdomain ? subdomain : null;
 
   // If subdomain → rewrite to /board/[slug]/...
   if (slug && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
