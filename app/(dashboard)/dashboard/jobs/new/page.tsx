@@ -69,7 +69,7 @@ export default async function PostJobPage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={LABEL}>Apply URL</label>
-            <input type="url" name="apply_url" placeholder="https://..." className={INPUT} />
+            <input type="text" name="apply_url" placeholder="yoursite.com/careers/apply" className={INPUT} />
           </div>
           <div>
             <label className={LABEL}>Or Apply Email</label>

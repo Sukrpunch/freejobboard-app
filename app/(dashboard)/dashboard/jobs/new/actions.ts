@@ -18,7 +18,8 @@ export async function postJob(formData: FormData) {
   const job_type = formData.get('job_type') as string;
   const description = formData.get('description') as string;
   const requirements = formData.get('requirements') as string || null;
-  const apply_url = formData.get('apply_url') as string || null;
+  const rawUrl = formData.get('apply_url') as string || null;
+  const apply_url = rawUrl ? (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`) : null;
   const apply_email = formData.get('apply_email') as string || null;
   const salary_min = formData.get('salary_min') ? Number(formData.get('salary_min')) : null;
   const salary_max = formData.get('salary_max') ? Number(formData.get('salary_max')) : null;
