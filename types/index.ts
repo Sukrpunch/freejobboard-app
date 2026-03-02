@@ -112,7 +112,7 @@ export const AVAILABLE_APPS: AppDefinition[] = [
     description: 'Let employers pay to pin their jobs to the top of your board.',
     icon: '⭐',
     price_monthly: 29,
-    price_id: null,
+    price_id: 'price_1T6Z1X7T20IfTjK1p2RmVWz1',
   },
   {
     slug: 'resume-database',
