@@ -38,8 +38,8 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Protect dashboard
-  if (pathname.startsWith('/dashboard') && !user) {
+  // Protect dashboard + admin
+  if ((pathname.startsWith('/dashboard') || pathname.startsWith('/admin')) && !user) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
