@@ -4,7 +4,9 @@ import { createClient } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, Briefcase, Users, BarChart2, AppWindow, Settings, ExternalLink, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Briefcase, Users, BarChart2, AppWindow, Settings, ExternalLink, LogOut, Menu, X, ShieldCheck } from 'lucide-react';
+
+const ADMIN_EMAILS = ['sukrpunch@yahoo.com', 'chris@bessjobs.com', 'agenticmason@gmail.com'];
 
 const NAV = [
   { href: '/dashboard',            label: 'Overview',  icon: LayoutDashboard },
@@ -20,6 +22,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [open, setOpen]       = useState(false);
   const [board, setBoard]     = useState<{ name: string; slug: string } | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,6 +31,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       if (!user) { router.replace('/login'); return; }
       const { data } = await supabase.from('boards').select('name, slug').eq('owner_id', user.id).single();
       setBoard(data);
+      setIsAdmin(ADMIN_EMAILS.includes(user.email?.toLowerCase() ?? ''));
       setLoading(false);
     });
   }, [router]);
@@ -78,6 +82,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </Link>
           );
         })}
+        {isAdmin && (
+          <>
+            <div className="border-t border-white/10 my-2" />
+            <Link href="/admin"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-amber-400 hover:text-amber-300 hover:bg-white/10 transition-colors">
+              <ShieldCheck size={16} /> Platform Admin
+            </Link>
+          </>
+        )}
       </nav>
 
       <div className="p-3 border-t border-white/10">
