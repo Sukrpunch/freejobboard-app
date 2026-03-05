@@ -44,6 +44,23 @@ export default function AppsPage() {
     }
   };
 
+  const handleInstallFree = async (slug: string) => {
+    if (!boardId) return;
+    setLoading(slug);
+    try {
+      const supabase = createClient();
+      await supabase.from('board_apps').upsert({
+        board_id: boardId,
+        app_slug: slug,
+        active: true,
+      }, { onConflict: 'board_id,app_slug' });
+      setInstalled(prev => new Set([...prev, slug]));
+      router.push(`/dashboard/apps?installed=${slug}`);
+    } catch {
+      setLoading(null);
+    }
+  };
+
   return (
     <div className="max-w-3xl space-y-6">
       <div>
@@ -62,6 +79,7 @@ export default function AppsPage() {
           const isInstalled = installed.has(app.slug);
           const isLoading = loading === app.slug;
           const hasPriceId = !!app.price_id;
+          const isFree = app.price_monthly === 0;
 
           return (
             <div key={app.slug} className={`bg-white border rounded-2xl p-5 flex flex-col gap-3 ${isInstalled ? 'border-indigo-200 bg-indigo-50/30' : 'border-slate-200'}`}>
@@ -70,23 +88,28 @@ export default function AppsPage() {
                   <span className="text-2xl">{app.icon}</span>
                   <div>
                     <h3 className="font-semibold text-slate-900 text-sm">{app.name}</h3>
-                    <p className="text-indigo-600 font-bold text-sm">${app.price_monthly}<span className="text-slate-400 font-normal text-xs">/mo</span></p>
+                    {isFree
+                      ? <p className="text-emerald-600 font-bold text-sm">Free</p>
+                      : <p className="text-indigo-600 font-bold text-sm">${app.price_monthly}<span className="text-slate-400 font-normal text-xs">/mo</span></p>
+                    }
                   </div>
                 </div>
                 {isInstalled && <span className="text-xs font-semibold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">Active</span>}
               </div>
               <p className="text-xs text-slate-500 leading-relaxed">{app.description}</p>
               <button
-                onClick={() => hasPriceId && !isInstalled && handleInstall(app.slug)}
-                disabled={isInstalled || isLoading || !hasPriceId}
+                onClick={() => (hasPriceId || isFree) && !isInstalled && (isFree ? handleInstallFree(app.slug) : handleInstall(app.slug))}
+                disabled={isInstalled || isLoading || (!hasPriceId && !isFree)}
                 className={`w-full py-2 rounded-xl text-sm font-semibold transition-colors ${
                   isInstalled
                     ? 'bg-slate-100 text-slate-500 cursor-default'
+                    : isFree
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer'
                     : hasPriceId
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer disabled:opacity-60'
                     : 'bg-slate-100 text-slate-400 cursor-default'
                 }`}>
-                {isInstalled ? '✓ Installed' : isLoading ? 'Redirecting...' : hasPriceId ? `Install — $${app.price_monthly}/mo` : 'Coming Soon'}
+                {isInstalled ? '✓ Installed' : isLoading ? 'Installing...' : isFree ? 'Install Free' : hasPriceId ? `Install — $${app.price_monthly}/mo` : 'Coming Soon'}
               </button>
             </div>
           );

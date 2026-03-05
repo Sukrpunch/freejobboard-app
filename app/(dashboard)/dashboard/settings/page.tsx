@@ -12,10 +12,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
   const { data: board } = await supabase.from('boards').select('*').eq('owner_id', user.id).single();
   if (!board) redirect('/register');
 
-  const { data: domainApp } = await supabase.from('board_apps')
-    .select('id').eq('board_id', board.id).eq('app_slug', 'custom-domain').eq('active', true).single();
-
-  const hasDomainApp = !!domainApp;
+  // Custom domain is now free for all boards — no app gate needed
+  const hasDomainApp = true;
 
   const sp = await searchParams;
   const INPUT = 'w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white';
@@ -75,8 +73,8 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-semibold text-slate-900 flex items-center gap-2">
-              🌐 White-Label Domain
-              {!hasDomainApp && <span className="text-xs font-semibold bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full">$9/mo</span>}
+              🌐 Custom Domain
+              <span className="text-xs font-semibold bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full">Free</span>
             </h2>
             <p className="text-sm text-slate-500 mt-0.5">
               Replace <code className="bg-slate-100 px-1 rounded text-xs">{board.slug}.freejobboard.ai</code> with your own domain like <code className="bg-slate-100 px-1 rounded text-xs">yourboard.com</code>

@@ -140,10 +140,10 @@ export const AVAILABLE_APPS: AppDefinition[] = [
   },
   {
     slug: 'custom-domain',
-    name: 'White-Label Domain',
-    description: 'Connect your own domain — jobs.yoursite.com instead of yourboard.freejobboard.ai.',
+    name: 'Custom Domain',
+    description: 'Connect your own domain — jobs.yoursite.com instead of yourboard.freejobboard.ai. Free, always.',
     icon: '🌐',
-    price_monthly: 9,
+    price_monthly: 0,
     price_id: null,
   },
 ];
