@@ -12,6 +12,7 @@ const NAV = [
   { href: '/dashboard',            label: 'Overview',  icon: LayoutDashboard },
   { href: '/dashboard/jobs',       label: 'Jobs',      icon: Briefcase },
   { href: '/dashboard/employers',  label: 'Employers', icon: Users },
+  { href: '/dashboard/applicants', label: 'Applicants', icon: Users },
   { href: '/dashboard/analytics',  label: 'Analytics', icon: BarChart2 },
   { href: '/dashboard/apps',       label: 'App Store', icon: AppWindow },
   { href: '/dashboard/embed',      label: 'Embed',     icon: Code2 },
