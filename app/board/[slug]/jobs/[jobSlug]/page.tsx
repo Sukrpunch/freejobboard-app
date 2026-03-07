@@ -157,7 +157,7 @@ export default async function JobDetailPage({
               <p className="text-xs text-slate-400 mt-2">Takes you to the application</p>
             </div>
           ) : job.apply_email ? (
-            <ApplyForm jobId={job.id} color={color} />
+            <ApplyForm jobId={job.id} color={color} boardId={board.id} />
           ) : null}
           {/* Legacy fallback kept for header button */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
