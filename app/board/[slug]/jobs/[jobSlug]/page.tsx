@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { MapPin, Clock, DollarSign, ArrowLeft, ExternalLink } from 'lucide-react';
 import type { Board, Job } from '@/types';
 import type { Metadata } from 'next';
+import ApplyForm from './ApplyForm';
 
 const EMP_TYPE_MAP: Record<string, string> = {
   'full-time':  'FULL_TIME',
@@ -145,16 +146,20 @@ export default async function JobDetailPage({
 
         {/* Sidebar */}
         <div className="space-y-4">
-          {applyHref && (
+          {/* If apply_url exists → external link; if only apply_email → in-app form */}
+          {job.apply_url ? (
             <div className="bg-white rounded-2xl border border-slate-200 p-5 text-center">
-              <a href={applyHref} target="_blank" rel="noopener noreferrer"
+              <a href={job.apply_url} target="_blank" rel="noopener noreferrer"
                 style={{ background: color }}
                 className="block w-full text-white font-bold py-3 rounded-xl hover:opacity-90 transition-opacity text-sm">
                 Apply Now →
               </a>
               <p className="text-xs text-slate-400 mt-2">Takes you to the application</p>
             </div>
-          )}
+          ) : job.apply_email ? (
+            <ApplyForm jobId={job.id} color={color} />
+          ) : null}
+          {/* Legacy fallback kept for header button */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
             <h3 className="font-semibold text-slate-900 text-sm">Job Details</h3>
             <div className="text-sm text-slate-600 space-y-2">
