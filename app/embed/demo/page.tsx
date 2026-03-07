@@ -101,8 +101,8 @@ export default function EmbedDemoPage() {
 
         <p className="text-center text-xs text-slate-400 mt-8">
           Need help?{' '}
-          <a href="mailto:mason@freejobboard.ai" className="text-indigo-500 hover:underline">
-            mason@freejobboard.ai
+          <a href="mailto:chris@freejobboard.ai" className="text-indigo-500 hover:underline">
+            chris@freejobboard.ai
           </a>
         </p>
       </div>
