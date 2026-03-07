@@ -58,20 +58,28 @@ export default async function EmbedPage() {
         </div>
       </div>
 
-      {/* Preview link */}
-      <div className="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 flex items-center justify-between gap-4">
-        <div>
-          <p className="font-medium text-indigo-900 text-sm">See a live preview</p>
-          <p className="text-indigo-700 text-xs mt-0.5">See exactly what the embed looks like on a page.</p>
+      {/* Links */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 flex items-center justify-between gap-4">
+          <div>
+            <p className="font-medium text-indigo-900 text-sm">Live preview</p>
+            <p className="text-indigo-700 text-xs mt-0.5">See what the embed looks like.</p>
+          </div>
+          <a href="/embed/demo" target="_blank" rel="noopener"
+            className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-4 py-2 rounded-xl transition-colors">
+            Preview →
+          </a>
         </div>
-        <a
-          href="/embed/demo"
-          target="_blank"
-          rel="noopener"
-          className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-4 py-2 rounded-xl transition-colors"
-        >
-          Preview →
-        </a>
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex items-center justify-between gap-4">
+          <div>
+            <p className="font-medium text-slate-900 text-sm">Installation guide</p>
+            <p className="text-slate-500 text-xs mt-0.5">WordPress, Wix, Webflow &amp; more.</p>
+          </div>
+          <a href="/embed/guide" target="_blank" rel="noopener"
+            className="flex-shrink-0 bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm px-4 py-2 rounded-xl transition-colors">
+            Guide →
+          </a>
+        </div>
       </div>
     </div>
   );
