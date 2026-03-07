@@ -8,6 +8,8 @@ export async function middleware(request: NextRequest) {
   // Custom domain → board slug mapping
   const CUSTOM_DOMAINS: Record<string, string> = {
     'evjobs.ai': 'evjobs',
+    'spacecoastcareers.com': 'spacecoastcareers',
+    'www.spacecoastcareers.com': 'spacecoastcareers',
   };
 
   // Subdomain routing — detect {slug}.freejobboard.ai
