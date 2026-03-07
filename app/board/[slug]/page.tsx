@@ -116,6 +116,17 @@ export default async function BoardPage({ params }: { params: Promise<{ slug: st
             </Link>
           </div>
         ) : null}
+
+        {/* Job Alerts CTA */}
+        <div className="mt-12 text-center border-t border-slate-100 pt-8">
+          <p className="text-slate-500 text-sm mb-2">Don&apos;t see the right role?</p>
+          <Link
+            href={`/board/${board.slug}/alerts`}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+          >
+            🔔 Get notified when new jobs are posted
+          </Link>
+        </div>
       </main>
     </div>
   );

@@ -30,12 +30,23 @@ export async function postJob(formData: FormData) {
   const suffix = Date.now().toString(36);
   const slug = `${baseSlug}-${suffix}`;
 
-  const { error } = await supabase.from('jobs').insert({
+  const { data: newJob, error } = await supabase.from('jobs').insert({
     board_id, title, slug, company, location, job_type, description,
     requirements, apply_url, apply_email, salary_min, salary_max, remote,
     status: 'active',
-  });
+  }).select('id').single();
 
   if (error) throw new Error(error.message);
+
+  // Fire job alert emails to subscribers (non-blocking)
+  if (newJob?.id) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.freejobboard.ai';
+    fetch(`${appUrl}/api/alerts/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ job_id: newJob.id }),
+    }).catch(() => {}); // fire-and-forget
+  }
+
   redirect('/dashboard/jobs');
 }
