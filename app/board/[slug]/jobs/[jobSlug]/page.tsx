@@ -3,6 +3,31 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MapPin, Clock, DollarSign, ArrowLeft, ExternalLink } from 'lucide-react';
 import type { Board, Job } from '@/types';
+import type { Metadata } from 'next';
+
+const EMP_TYPE_MAP: Record<string, string> = {
+  'full-time':  'FULL_TIME',
+  'part-time':  'PART_TIME',
+  'contract':   'CONTRACTOR',
+  'freelance':  'CONTRACTOR',
+  'internship': 'INTERN',
+};
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string; jobSlug: string }> }
+): Promise<Metadata> {
+  const { slug, jobSlug } = await params;
+  const supabase = await createClient();
+  const { data: board } = await supabase.from('boards').select('name').eq('slug', slug).single();
+  const { data: job }   = await supabase.from('jobs').select('title, description, company').eq('slug', jobSlug).single();
+  if (!job || !board) return {};
+  const desc = job.description.replace(/\n/g, ' ').replace(/<[^>]+>/g, '').slice(0, 160);
+  return {
+    title: `${job.title} at ${job.company} — ${board.name}`,
+    description: desc,
+    openGraph: { title: `${job.title} at ${job.company}`, description: desc },
+  };
+}
 
 export default async function JobDetailPage({
   params,
@@ -25,8 +50,45 @@ export default async function JobDetailPage({
   const color = board.primary_color || '#6366f1';
   const applyHref = job.apply_url || (job.apply_email ? `mailto:${job.apply_email}` : null);
 
+  // Google Jobs JSON-LD
+  const validThrough = job.expires_at
+    ? new Date(job.expires_at).toISOString()
+    : new Date(new Date(job.created_at).getTime() + 90 * 24 * 60 * 60 * 1000).toISOString();
+
+  const jsonLd: Record<string, unknown> = {
+    '@context': 'https://schema.org/',
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description,
+    datePosted: new Date(job.created_at).toISOString(),
+    validThrough,
+    employmentType: EMP_TYPE_MAP[job.job_type] || 'OTHER',
+    hiringOrganization: { '@type': 'Organization', name: job.company },
+    jobLocation: {
+      '@type': 'Place',
+      address: { '@type': 'PostalAddress', addressLocality: job.location },
+    },
+  };
+  if (job.remote) jsonLd.jobLocationType = 'TELECOMMUTE';
+  if (job.salary_min || job.salary_max) {
+    jsonLd.baseSalary = {
+      '@type': 'MonetaryAmount',
+      currency: job.salary_currency || 'USD',
+      value: {
+        '@type': 'QuantitativeValue',
+        ...(job.salary_min ? { minValue: job.salary_min } : {}),
+        ...(job.salary_max ? { maxValue: job.salary_max } : {}),
+        unitText: 'YEAR',
+      },
+    };
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 text-sm font-medium">
