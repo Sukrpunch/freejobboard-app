@@ -14,9 +14,10 @@ export async function saveSettings(formData: FormData) {
   const category = formData.get('category') as string || null;
   const primary_color = formData.get('primary_color') as string;
   const custom_domain = formData.get('custom_domain') as string || null;
+  const plausible_domain = formData.get('plausible_domain') as string || null;
 
   await supabase.from('boards').update({
-    name, tagline, category, primary_color, custom_domain,
+    name, tagline, category, primary_color, custom_domain, plausible_domain,
   }).eq('id', board_id).eq('owner_id', user.id);
 
   revalidatePath('/dashboard/settings');

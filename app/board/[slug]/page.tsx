@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Script from 'next/script';
 import { MapPin, Clock, DollarSign, Search, Zap, ArrowRight, Briefcase } from 'lucide-react';
 import type { Board, Job } from '@/types';
 
@@ -30,8 +31,18 @@ export default async function BoardPage({ params }: { params: Promise<{ slug: st
     'internship': 'bg-pink-50 text-pink-700 border-pink-100',
   };
 
+  const boardWithAnalytics = board as Board & { plausible_domain?: string };
+
   return (
     <div className="min-h-screen" style={{ background: '#f8f9fc' }}>
+      {boardWithAnalytics.plausible_domain && (
+        <Script
+          defer
+          data-domain={boardWithAnalytics.plausible_domain}
+          src="https://plausible.io/js/script.js"
+          strategy="afterInteractive"
+        />
+      )}
 
       {/* Header */}
       <header className="bg-white border-b border-slate-100 sticky top-0 z-20 shadow-sm">

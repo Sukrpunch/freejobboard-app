@@ -159,3 +159,6 @@ create index if not exists jobs_board_id_featured on jobs(board_id, featured);
 create index if not exists jobs_created_at on jobs(created_at desc);
 create index if not exists boards_slug on boards(slug);
 create index if not exists boards_custom_domain on boards(custom_domain);
+
+-- Analytics: per-board Plausible domain (added 2026-03-07)
+alter table boards add column if not exists plausible_domain text;

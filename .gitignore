@@ -42,3 +42,4 @@ next-env.d.ts
 .env.local
 .env
 scripts/seed-fanpark.js
+scripts/seed-spacecoast.js

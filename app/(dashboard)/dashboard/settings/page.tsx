@@ -51,6 +51,19 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
             <span className="text-sm text-slate-500">Accent color for buttons and highlights</span>
           </div>
         </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            Plausible Analytics domain <span className="text-slate-400 font-normal">(optional)</span>
+          </label>
+          <input
+            type="text"
+            name="plausible_domain"
+            defaultValue={(board as typeof board & { plausible_domain?: string }).plausible_domain ?? ''}
+            placeholder="yourboard.com"
+            className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <p className="text-xs text-slate-400 mt-1">Your site's domain in Plausible (e.g. <code>spacecoastcareers.com</code>). Must match a site you've added in your Plausible account.</p>
+        </div>
         <button type="submit"
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-colors">
           Save Settings
