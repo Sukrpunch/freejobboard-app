@@ -38,8 +38,8 @@ alter table resume_downloads enable row level security;
 create policy "resumes_insert" on resumes for insert with check (true);
 
 -- Candidates can view/update their own resumes
-create policy "resumes_own" on resumes for select using (candidate_email = current_user_email());
-create policy "resumes_update_own" on resumes for update using (candidate_email = current_user_email());
+create policy "resumes_own" on resumes for select using (candidate_email = auth.email());
+create policy "resumes_update_own" on resumes for update using (candidate_email = auth.email());
 
 -- Employers (board owners) can view resumes from their board if they have Resume Database app installed
 create policy "resumes_employer_view" on resumes for select using (
