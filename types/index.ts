@@ -138,12 +138,5 @@ export const AVAILABLE_APPS: AppDefinition[] = [
     price_monthly: 29,
     price_id: 'price_1T9sEt7T20IfTjK1z4xFSIBZ',
   },
-  {
-    slug: 'custom-domain',
-    name: 'Custom Domain',
-    description: 'Connect your own domain — jobs.yoursite.com instead of yourboard.freejobboard.ai. Free, always.',
-    icon: '🌐',
-    price_monthly: 0,
-    price_id: null,
-  },
+
 ];
