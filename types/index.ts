@@ -120,7 +120,7 @@ export const AVAILABLE_APPS: AppDefinition[] = [
     description: 'Monetize your candidate pool. Employers pay to access resumes.',
     icon: '📄',
     price_monthly: 49,
-    price_id: null,
+    price_id: 'price_1T9s277T20IfTjK161zGWDLS',
   },
   {
     slug: 'advanced-analytics',
