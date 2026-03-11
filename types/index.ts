@@ -136,7 +136,7 @@ export const AVAILABLE_APPS: AppDefinition[] = [
     description: 'Blast job alerts to your full subscriber list on demand.',
     icon: '📣',
     price_monthly: 29,
-    price_id: null,
+    price_id: 'price_1T9sEt7T20IfTjK1z4xFSIBZ',
   },
   {
     slug: 'custom-domain',
