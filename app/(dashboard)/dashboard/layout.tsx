@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, Briefcase, Users, FileText, BarChart2, AppWindow, Settings, ExternalLink, LogOut, Menu, X, ShieldCheck, Code2 } from 'lucide-react';
+import { LayoutDashboard, Briefcase, Users, FileText, BarChart2, AppWindow, Settings, ExternalLink, LogOut, Menu, X, ShieldCheck, Code2, Megaphone } from 'lucide-react';
 
 const ADMIN_EMAILS = ['sukrpunch@yahoo.com', 'chris@bessjobs.com', 'agenticmason@gmail.com'];
 
@@ -15,6 +15,7 @@ const NAV = [
   { href: '/dashboard/applicants', label: 'Applicants', icon: Users },
   { href: '/dashboard/resumes',    label: 'Resumes', icon: FileText },
   { href: '/dashboard/analytics',  label: 'Analytics', icon: BarChart2 },
+  { href: '/dashboard/campaigns',  label: 'Campaigns', icon: Megaphone },
   { href: '/dashboard/apps',       label: 'App Store', icon: AppWindow },
   { href: '/dashboard/embed',      label: 'Embed',     icon: Code2 },
   { href: '/dashboard/settings',   label: 'Settings',  icon: Settings },
