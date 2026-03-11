@@ -128,7 +128,7 @@ export const AVAILABLE_APPS: AppDefinition[] = [
     description: 'Deep traffic, conversion, and listing performance data.',
     icon: '📈',
     price_monthly: 19,
-    price_id: null,
+    price_id: 'price_1T9s9f7T20IfTjK1w7DyvsvA',
   },
   {
     slug: 'alert-campaigns',
